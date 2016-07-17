@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     public Rigidbody rb;
- 
+
     public float speed;
     public float turnSpeed;
 
@@ -16,20 +17,11 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    //// Update is called once per frame
-    //void FixedUpdate()
-    //{
-    //    float movehorizontal = Input.GetAxis("Horizontal");
-    //    float movevertical = Input.GetAxis("Vertical");
-    //    Vector3 force = new Vector3(movehorizontal, 0, movevertical);
-    //    rb.AddForce(force * speed);
-    //}
-
     void FixedUpdate()
     {
         if (Input.GetAxis("Horizontal") > 0)
         { //if the right arrow is pressed
-            
+
             transform.Rotate(0, turnSpeed * Time.deltaTime, -10 * Time.deltaTime, Space.World); //and then turn the plane
         }
         if (Input.GetAxis("Horizontal") < 0)
@@ -51,5 +43,14 @@ public class PlayerController : MonoBehaviour {
         rb.AddForce(force * speed);
     }
 
-}
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Pick Up"))
+        {
+            other.gameObject.SetActive(false);
+            //count = count + 1;\
+            //SetCountText();
+        }
 
+    }
+}
