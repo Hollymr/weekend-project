@@ -1,42 +1,29 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
 
     public Rigidbody rb;
-
     public float speed;
     public float turnSpeed;
+    private int count; // count pickups
+    public Text countText; //refers to count text in left hand corner of screen 
+    public Text winText; // displays when player wins 
+
 
     // Use this for initialization
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
-
+        count = 0;
+        SetCountText();
+        winText.text = "";
     }
 
     void FixedUpdate()
     {
-        if (Input.GetAxis("Horizontal") > 0)
-        { //if the right arrow is pressed
-
-            transform.Rotate(0, turnSpeed * Time.deltaTime, -10 * Time.deltaTime, Space.World); //and then turn the plane
-        }
-        if (Input.GetAxis("Horizontal") < 0)
-        { //if the left arrow is pressed
-            transform.Rotate(0, turnSpeed * Time.deltaTime, 10 * Time.deltaTime, Space.World); //The X-rotation turns the plane - the Z-rotation tilts it
-        }
-        if (Input.GetAxis("Vertical") > 0)
-        { //if the up arrow is pressed
-            transform.Rotate(10 * Time.deltaTime, 0, 0);
-        }
-        if (Input.GetAxis("Vertical") < 0)
-        { //if the down arrow is pressed
-            transform.Rotate(-10 * Time.deltaTime, 0, 0);
-        }
-
         float movehorizontal = Input.GetAxis("Horizontal");
         float movevertical = Input.GetAxis("Vertical");
         Vector3 force = new Vector3(movehorizontal, 0, movevertical);
@@ -48,9 +35,19 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Pick Up"))
         {
             other.gameObject.SetActive(false);
-            //count = count + 1;\
-            //SetCountText();
+            count = count + 1;
+            SetCountText();
+        }
+    }
+
+    void SetCountText ()
+    {
+            countText.text = "Count: " + count.ToString();
+            if (count >= 10)
+            {
+                winText.text = "You Win!!";
+            }
         }
 
     }
-}
+
